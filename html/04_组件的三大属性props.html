@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件的三大属性props</title>
+</head>
+<body>
+    <div id="test"></div>
+    <div id="test2"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/prop-types.js"></script>
+    <script src="../js/babel.js"></script>
+
+    <script type="text/babel">
+    // 方式一：工厂函数组件（如果没有state状态的时候，可以使用工厂函数组件，效率高）
+    // function Person(props){
+    //     return (
+    //         <ul>
+    //             <li>姓名：{props.name}</li>
+    //             <li>性别：{props.sex}</li>
+    //             <li>年龄：{props.age}</li>
+    //         </ul>
+    //     )
+    // }
+      // 方式二： ES6类组件（复杂组件）
+    class Person extends React.Component{
+        // 重写内置方法，this指向当前组件
+        render(){
+            return (
+            <ul>
+                <li>姓名：{this.props.name}</li>
+                <li>性别：{this.props.sex}</li>
+                <li>年龄：{this.props.age}</li>
+            </ul>
+        )
+        }
+    } 
+    const p1 = {
+        name:'Tom',
+        age:20,
+        sex: '男'
+    }
+    const p2 = {
+        name:'Lisa',
+    }
+    //设置默认值
+    Person.defaultProps = { 
+        age: 18,
+        sex:'女'
+    }
+    //定义属性类型和必填项
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number,
+        sex: PropTypes.string
+    }
+    
+    // ReactDOM.render(<Person name={p1.name} age={p1.age} sex={p1.sex} />, document.getElementById("test"))
+    ReactDOM.render(<Person {...p1} />, document.getElementById("test"))
+
+    ReactDOM.render(<Person name={p2.name}/>, document.getElementById("test2"))
+    </script>
+</body>
+</html>

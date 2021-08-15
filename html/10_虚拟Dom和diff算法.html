@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+</head>
+<body>
+    <div id="test"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/prop-types.js"></script>
+    <script src="../js/babel.js"></script>
+
+    <script type="text/babel">
+    /**
+     * 组件化编写功能的流程
+     * 1.拆分组件
+     * 2.实现静态组件
+     * 3.实现动态组件
+     *   3.1 初始化数据动态显示
+     *   3.2 实现交互功能
+    */
+    class Clock extends React.Component{
+        // 重写内置方法，this指向当前组件
+        constructor(props){
+            super(props);
+            this.state = {
+                dateTime: new Date()
+            }
+        }
+        componentDidMount(){
+            setInterval(()=>{
+                this.setState({
+                    dateTime: new Date()
+                })
+            },1000)
+        }
+        render(){
+            return (
+            <div>
+                请输入姓名: <input type="text" />
+                当前时间{this.state.dateTime.toTimeString()}
+            </div>
+        )
+        }
+    } 
+   
+    ReactDOM.render(<Clock/>, document.getElementById("test"))
+    </script>
+</body>
+</html>

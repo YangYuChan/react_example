@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+</head>
+<body>
+    <div id="test"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/prop-types.js"></script>
+    <script src="../js/babel.js"></script>
+
+    <script type="text/babel">
+    /**
+     * Q. 数据放在那里？
+     * A. 判断是多个组件需要调用，还是单个组件调用，如果是多个组件调用，就放到父组件里，如果是单个组件调用就放在单个组件里
+     * Q. 需要在子组件改变父组件的状态，怎么办?
+     * A. 子组件不能直接改变父组件的状态; 状态在哪个组件，改变状态的行为就在哪个组件
+     * 
+     * 组件化编写功能的流程
+     * 1.拆分组件
+     * 2.实现静态组件
+     * 3.实现动态组件
+     *   3.1 初始化数据动态显示
+     *   3.2 实现交互功能
+    */
+    class Life extends React.Component{
+        // 重写内置方法，this指向当前组件
+        constructor(props){
+            super(props);
+           this.state = {
+            opacity: 1
+           }
+           this.tick = this.tick.bind(this)
+           this.destoryComponent = this.destoryComponent.bind(this)
+
+        }
+        // 当组件第一次被渲染到 DOM 中的时候，就为其设置一个计时器
+        componentDidMount(){
+            this.timerID = setInterval(() => this.tick(), 200);
+        }
+        tick() {
+            console.log('定时器执行了....');
+            
+            let  {opacity} = this.state;
+            opacity -= 0.1;
+            if(opacity <= 0){
+                opacity = 1;
+            }
+            this.setState({
+                opacity
+            });
+        }
+        // 当 DOM 中组件被删除的时候，应该清除计时器,防止内存泄漏
+        componentWillUnmount(){
+            clearInterval(this.timerID); 
+        }
+        destoryComponent(){
+            // 从 DOM 中卸载组件，会将其事件处理器（event handlers）和 state 一并清除
+            ReactDOM.unmountComponentAtNode(document.getElementById("test"))
+        }
+        render(){
+            const { opacity } = this.state;
+            return (
+            <div>
+                <h2 style={{opacity:opacity}}>{this.props.msg}</h2>
+                <button onClick={this.destoryComponent}>不活了</button>
+            </div>
+        )
+        }
+    } 
+   
+    ReactDOM.render(<Life msg="React太难了"/>, document.getElementById("test"))
+    </script>
+</body>
+</html>

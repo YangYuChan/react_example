@@ -3,44 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>组件的三大属性state</title>
+    <title>组件的三大属性props</title>
 </head>
 <body>
     <div id="test"></div>
+    <div id="test2"></div>
     <script src="../js/react.development.js"></script>
     <script src="../js/react-dom.development.js"></script>
+    <script src="../js/prop-types.js"></script>
     <script src="../js/babel.js"></script>
 
     <script type="text/babel">
     // 方式一：工厂函数组件（如果没有state状态的时候，可以使用工厂函数组件，效率高）
-    // function MyComponent(){
-    //     return <h2>工厂函数组件</h2>
+    // function Person(props){
+    //     return (
+    //         <ul>
+    //             <li>姓名：{props.name}</li>
+    //             <li>性别：{props.sex}</li>
+    //             <li>年龄：{props.age}</li>
+    //         </ul>
+    //     )
     // }
-    // 方式二： ES6类组件（复杂组件）
+      // 方式二： ES6类组件（复杂组件）
     class Like extends React.Component{
+        // 重写内置方法，this指向当前组件
         constructor(props){
-            super(props)
-            // 初始化状态
+            super(props);
             this.state = {
                 isLikeMe: false
             }
-            this.handleClick = this.handleClick.bind(this) //固定写法 bind改变this指向返回一个新的函数
+            this.handleClick = this.handleClick.bind(this)
         }
-        // 自定义方法，当前this是undefined
-        handleClick(){ 
+        handleClick(){
             const isLikeMe = !this.state.isLikeMe;
             this.setState({
                 isLikeMe
             })
-            console.log('handleClick()', this)
         }
-        // 重写内置方法，this指向当前组件
         render(){
             const {isLikeMe} = this.state;
-            return <h2 onClick={this.handleClick}>{isLikeMe ? '你喜欢我' : '我喜欢你'}</h2>
+            return <h2 onClick={this.handleClick}>{isLikeMe ? '我喜欢你': '你喜欢我'}</h2>
         }
-    }   
-    ReactDOM.render(<Like />, document.getElementById("test"))
+    } 
+
+    ReactDOM.render(<Like />, document.getElementById("test2"))
     </script>
 </body>
 </html>
