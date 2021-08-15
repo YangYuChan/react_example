@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渲染列表</title>
+</head>
+<body>
+    <div id="test"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+
+    <script type="text/babel">
+    const names = ['React','Angular','Vue','JQuery'];
+    const ul = (
+        //map() 返回一个新的数组对象
+        <div>    
+            <h3>数组循环</h3>
+            <ul>
+                {
+                    names.map((name,index) => <li key={index}>{name}</li> )
+                }
+            </ul>
+        </div>
+    )
+    ReactDOM.render(ul, document.getElementById("test"))
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件的三大属性state</title>
+</head>
+<body>
+    <div id="test"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.js"></script>
+
+    <script type="text/babel">
+    // 方式一：工厂函数组件（如果没有state状态的时候，可以使用工厂函数组件，效率高）
+    // function MyComponent(){
+    //     return <h2>工厂函数组件</h2>
+    // }
+    // 方式二： ES6类组件（复杂组件）
+    class Like extends React.Component{
+        constructor(props){
+            super(props)
+            // 初始化状态
+            this.state = {
+                isLikeMe: false
+            }
+            this.handleClick = this.handleClick.bind(this) //固定写法 bind改变this指向返回一个新的函数
+        }
+        // 自定义方法，当前this是undefined
+        handleClick(){ 
+            const isLikeMe = !this.state.isLikeMe;
+            this.setState({
+                isLikeMe
+            })
+            console.log('handleClick()', this)
+        }
+        // 重写内置方法，this指向当前组件
+        render(){
+            const {isLikeMe} = this.state;
+            return <h2 onClick={this.handleClick}>{isLikeMe ? '你喜欢我' : '我喜欢你'}</h2>
+        }
+    }   
+    ReactDOM.render(<Like />, document.getElementById("test"))
+    </script>
+</body>
+</html>
