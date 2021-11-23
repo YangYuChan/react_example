@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3_回调ref中回调执行次数的问题</title>
+</head>
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="test"></div>
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js" type="text/javascript"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script src="../js/react-dom.development.js" type="text/javascript"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js/babel.js" type="text/javascript"></script>
+
+    <script type="text/babel">
+        class Demo extends React.Component{
+            state = {
+                isHot: true
+            }
+            // 展示左边输入框的数据
+            showInfo = () =>{
+                const { input1 } = this;
+                alert(input1.value)
+            }
+            changeWeather = () =>{
+                const {isHot} = this.state;
+                // 更新状态
+                this.setState({
+                    isHot: !isHot
+                })
+            }
+            saveInput = (c) =>{
+                this.input1 = c
+                console.log("@", c)
+            }
+            render(){
+                const {isHot} = this.state
+                return(
+                    <div>
+                        <h2>今天天气很{isHot ? '炎热' : '凉爽'}</h2>
+                        {/*
+                            这种方式，打印会显示两次，因为render会渲染n+1次，c的内容会先被清空，再重新渲染
+                            @ null
+                            @ <input type=​"text" placeholder=​"点击按钮提示数据">​
+                        <input type="text" ref={(c)=>{this.input1 = c; console.log("@", c)}} placeholder="点击按钮提示数据"/>
+                        */}
+                        <input type="text" ref={this.saveInput} /><br/>
+                        <button onClick={this.showInfo}>点我提示左边数据</button>
+                        <button onClick={this.changeWeather}>点击切换天气</button>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(<Demo/>, document.getElementById('test')) 
+        
+
+    </script>
+</body>
+</html>
